@@ -1,18 +1,18 @@
 ---
 name: kudi-report
-description: 生成库迪助手报表（默认B端+C端，支持全渠道）并导出CSV与截图
+description: 生成客服助手报表（默认B端+C端，支持全渠道）并导出CSV与截图
 user-invocable: true
 metadata: {"openclaw":{"emoji":"📊","homepage":"https://docs.openclaw.ai/tools/skills"}}
 ---
 
-# 库迪助手报表 Skill
+# 客服助手报表 Skill
 
-当用户请求“库迪助手报表”时，执行本技能脚本生成报表。
+当用户请求“客服助手报表”时，执行本技能脚本生成报表。
 
 执行规则：
-- 用户消息包含“库迪助手报表 全渠道”或参数里包含“全渠道/full/all”时，运行全量模式。
+- 用户消息包含“客服助手报表 全渠道”或参数里包含“全渠道/full/all”时，运行全量模式。
 - 否则运行默认模式（仅 B 端 + C 端）。
-- 兼容旧叫法 `session-stats`，但回复中优先使用“库迪助手报表”。
+- 兼容旧叫法 `session-stats`，但回复中优先使用“客服助手报表”。
 
 请通过命令行执行：
 
