@@ -1,0 +1,7 @@
+interface:
+  display_name: "AI 数据分析 SOP"
+  short_description: "面向决策的业务数据分析工作流"
+  default_prompt: "使用 $ai-data-analysis-plus，把这份数据转成有证据链、归因和行动建议的决策型分析。"
+
+policy:
+  allow_implicit_invocation: true
