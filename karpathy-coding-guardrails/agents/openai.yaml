@@ -1,0 +1,7 @@
+interface:
+  display_name: "Karpathy 编码护栏"
+  short_description: "明确假设、最小改动、先定义验证标准"
+  default_prompt: "使用 $karpathy-coding-guardrails，以 Andrej Karpathy 的 CLAUDE.md 风格完成这次编码任务：先说清假设和成功标准，再做最小改动并验证。"
+
+policy:
+  allow_implicit_invocation: true
