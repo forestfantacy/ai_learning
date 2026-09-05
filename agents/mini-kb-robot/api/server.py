@@ -39,8 +39,8 @@ MAX_MESSAGE_LENGTH = 2000
 
 validate_env()
 app = FastAPI(title="mini-kb-robot")
-# Dev-only convenience: lets web/index.html be opened from a different origin
-# (e.g. a plain file:// double-click) and still reach /chat.
+# Dev-only convenience: lets an external tool/script on a different origin
+# call the API directly (web/index.html itself is same-origin and doesn't need this).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
