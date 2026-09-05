@@ -2,6 +2,7 @@ openai>=1.0
 fastapi
 uvicorn[standard]
 pydantic>=2
+eval_type_backport  # needed for pydantic to resolve `X | None` annotations on Python <3.10
 openpyxl
 python-dotenv
 pyyaml
