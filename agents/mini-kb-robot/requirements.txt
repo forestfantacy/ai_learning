@@ -1,0 +1,9 @@
+openai>=1.0
+fastapi
+uvicorn[standard]
+pydantic>=2
+openpyxl
+python-dotenv
+pyyaml
+pytest
+socksio

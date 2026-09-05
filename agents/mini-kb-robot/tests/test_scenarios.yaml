@@ -1,0 +1,82 @@
+# Conversational scenarios run against the real Ark API via chat.engine.
+# Requires ARK_API_KEY (+ ARK_MODEL) to be set; scripts/run_scenarios.py
+# skips the whole suite with a message if they're missing.
+#
+# Each scenario is a fresh session; turns within a scenario share one
+# session_id so multi-turn clarification flows are exercised for real.
+
+- name: risk_cluster_ambiguous_bundle_first_turn
+  description: >
+    Deliberately ambiguous "联名周边卖完了" must not be answered directly -
+    this is the core case the whole design exists to get right.
+  turns:
+    - message: "联名周边卖完了"
+      expect_status: clarifying
+
+- name: risk_cluster_resolves_to_bundle_after_clarification
+  turns:
+    - message: "联名周边卖完了"
+      expect_status: clarifying
+    - message: "是那个联名套餐"
+      expect_status: answered
+      expect_entry_id: "2081585274477150208"
+      expect_reply_contains: ["附近在售门店"]
+      expect_reply_not_contains: ["加急补货", "备货中"]
+
+- name: risk_cluster_single_item_never_returns_bundle_answer
+  turns:
+    - message: "联名周边卖完了"
+      expect_status: clarifying
+    - message: "是单独的一件周边商品"
+      # May ask one more disambiguating question (buy vs redeem) or resolve
+      # directly - either is acceptable, but it must never be the bundle answer.
+      expect_entry_id_not_in: ["2081585274477150208"]
+
+- name: risk_cluster_generic_product_no_clarification_needed
+  turns:
+    - message: "普通商品显示售罄了"
+      expect_status: answered
+      expect_entry_id: "63730228540"
+
+- name: factual_deregister_account
+  turns:
+    - message: "怎么注销账号"
+      expect_status: answered
+      expect_entry_id: "47975825190"
+      expect_image_urls_nonempty: true
+
+- name: factual_voucher_extension
+  turns:
+    - message: "优惠券可以延期吗"
+      expect_status: answered
+      expect_entry_id: "88574535503"
+
+- name: factual_wifi_password
+  turns:
+    - message: "门店wifi密码是多少"
+      expect_status: answered
+      expect_entry_id: "65203569198"
+
+- name: factual_invoice_preserves_exact_number
+  turns:
+    - message: "怎么开发票"
+      expect_status: answered
+      expect_entry_id: "09469280795"
+      expect_reply_contains: ["15个工作日"]
+
+- name: factual_customer_service_phone
+  turns:
+    - message: "客服电话多少"
+      expect_status: answered
+      expect_entry_id: "09566022959"
+
+- name: small_talk_routes_through_same_mechanism
+  turns:
+    - message: "谢谢，再见"
+      expect_status: answered
+      expect_entry_id: "99662070370"
+
+- name: out_of_kb_question_admits_no_match
+  turns:
+    - message: "你们卖披萨吗"
+      expect_status: no_match

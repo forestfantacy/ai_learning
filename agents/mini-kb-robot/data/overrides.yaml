@@ -1,0 +1,52 @@
+# Hand-maintained corrections layered on top of the auto-generated ingest.
+# Re-applied every time `python ingest/build_kb.py` runs, so these survive a
+# rebuild from a freshly-edited source xlsx.
+
+# category_fixes: force a specific entry's category, overriding both the raw
+# xlsx value and the CATEGORY_CANONICAL normalization map in build_kb.py.
+# Use this for genuine mis-filing (wrong category assigned by mistake), not
+# for the systematic name variants already handled by CATEGORY_CANONICAL.
+category_fixes:
+  "1988496532821483520": "库迪咖啡TOC/订单相关" # "如何查看消费金额" was filed under 代言人类 by mistake
+
+# disambiguation_hints: id -> a short Chinese explanation of what makes this
+# entry different from the ones it's flagged ambiguous_with. Shown to the
+# model in the tool schema/system prompt so it can tell the entries apart
+# instead of guessing. Only needed for entries the automated dedupe pass
+# flags as ambiguous_with something (see data/dedupe_report.json).
+disambiguation_hints:
+  "2081585274477150208": >-
+    问的是「套餐/礼盒」这类打包周边整体卖光——引导去【潮玩】页面看附近在售门店；
+    不要和「联名周边商品售罄」(单品补货中) 或「联名周边商品兑换不到」(换店兑换) 混淆。
+  "11067290495": >-
+    问的是单件周边商品补货中，答案是"加急补货、留意到货"，不涉及去别的门店买，
+    不要和「联名周边套餐售罄」(引导去别的门店) 混淆。
+  "2081586938646953984": >-
+    问的是拿着已购买的兑换券去兑换时提示没库存，答案是"切换到有库存的门店兑换"，
+    是券已到手、换店操作的问题，不是"还没买到/补货中"的问题。
+  "63730228540": >-
+    这是普通商品售罄，和联名/周边活动无关，只是字面上和"联名周边商品售罄"相似；
+    答案只是"备货中，关注一下"，没有换店或引导购买的具体动作。
+
+# manual_ambiguous_edges: force id -> [other ids] pairs into the ambiguous
+# set even if the automated similarity/answer-diff heuristic in
+# ingest/dedupe.py doesn't catch them. The four IDs below are the real risk
+# cluster found during design review (all four questions are some variant of
+# "联名周边...售罄/兑换不到" with three different correct answers). The
+# automated pass only connects them in a star via the shared hub id
+# 11067290495 (每对文本相似度各自过阈值才连边，四条彼此并非两两都过阈值);
+# force the full clique here so every one of the four sees all three others
+# in its ambiguous_with list, not just the ones it happens to be bigram-close to.
+manual_ambiguous_edges:
+  "2081585274477150208": ["11067290495", "2081586938646953984", "63730228540"]
+  "11067290495": ["2081585274477150208", "2081586938646953984", "63730228540"]
+  "2081586938646953984": ["11067290495", "2081585274477150208", "63730228540"]
+  "63730228540": ["11067290495", "2081585274477150208", "2081586938646953984"]
+
+# manual_ambiguous_removals: [id, id] pairs to force OUT of the ambiguous
+# set even if the automated heuristic flagged them - for pairs where the
+# bigram overlap is a coincidence of shared substring, not a real confusion
+# risk (the two questions are about clearly different intents once you read
+# past the shared words).
+manual_ambiguous_removals:
+  - ["95027638717", "99496520906"] # "历史订单开票" vs "删除历史订单" - share "历史订单" but 开票/删除 是不相关的意图

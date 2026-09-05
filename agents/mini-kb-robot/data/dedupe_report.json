@@ -1,0 +1,70 @@
+{
+  "high_risk_ambiguous_pairs": [
+    {
+      "id_a": "88574535503",
+      "id_b": "61564710226",
+      "question_a": "优惠券能否延期",
+      "question_b": "团购券能否延期",
+      "question_similarity": 0.5,
+      "answers_differ": true
+    },
+    {
+      "id_a": "61564710226",
+      "id_b": "1965315511963799552",
+      "question_a": "团购券能否延期",
+      "question_b": "代金券能否延期",
+      "question_similarity": 0.5,
+      "answers_differ": true
+    },
+    {
+      "id_a": "51834259629",
+      "id_b": "88614080612",
+      "question_a": "美团券未到账",
+      "question_b": "团购券未到账",
+      "question_similarity": 0.429,
+      "answers_differ": true
+    },
+    {
+      "id_a": "95027638717",
+      "id_b": "99496520906",
+      "question_a": "历史订单开票",
+      "question_b": "删除历史订单",
+      "question_similarity": 0.429,
+      "answers_differ": true
+    },
+    {
+      "id_a": "2081585274477150208",
+      "id_b": "11067290495",
+      "question_a": "联名周边套餐售罄",
+      "question_b": "联名周边商品售罄",
+      "question_similarity": 0.4,
+      "answers_differ": true
+    },
+    {
+      "id_a": "2081586938646953984",
+      "id_b": "11067290495",
+      "question_a": "联名周边商品兑换不到",
+      "question_b": "联名周边商品售罄",
+      "question_similarity": 0.455,
+      "answers_differ": true
+    },
+    {
+      "id_a": "63730228540",
+      "id_b": "11067290495",
+      "question_a": "商品售罄",
+      "question_b": "联名周边商品售罄",
+      "question_similarity": 0.429,
+      "answers_differ": true
+    }
+  ],
+  "likely_true_duplicates": [
+    {
+      "id_a": "88574535503",
+      "id_b": "1965315511963799552",
+      "question_a": "优惠券能否延期",
+      "question_b": "代金券能否延期",
+      "question_similarity": 0.5,
+      "answers_differ": false
+    }
+  ]
+}
