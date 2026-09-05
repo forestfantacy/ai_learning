@@ -3,12 +3,12 @@
 # or RHEL/CentOS family). Safe to re-run: picks up code/dependency updates and
 # restarts the service.
 #
-# Usage: ./scripts/deploy.sh [port]   (default port 8000)
+# Usage: ./scripts/deploy.sh [port]   (default port 80)
 set -euo pipefail
 
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SERVICE_NAME="mini-kb-robot"
-PORT="${1:-8000}"
+PORT="${1:-80}"
 RUN_USER="$(whoami)"
 
 cd "$APP_DIR"
@@ -48,6 +48,11 @@ if [ ! -f .env ]; then
 fi
 
 echo "==> systemd service"
+BIND_CAP=""
+if [ "${PORT}" -lt 1024 ] && [ "${RUN_USER}" != "root" ]; then
+    # Non-root can't bind ports <1024 without this capability.
+    BIND_CAP="AmbientCapabilities=CAP_NET_BIND_SERVICE"
+fi
 sudo tee "/etc/systemd/system/${SERVICE_NAME}.service" > /dev/null <<EOF
 [Unit]
 Description=${SERVICE_NAME}
@@ -56,6 +61,7 @@ After=network.target
 [Service]
 Type=simple
 User=${RUN_USER}
+${BIND_CAP}
 WorkingDirectory=${APP_DIR}
 EnvironmentFile=${APP_DIR}/.env
 ExecStart=${APP_DIR}/.venv/bin/uvicorn api.server:app --host 0.0.0.0 --port ${PORT}
