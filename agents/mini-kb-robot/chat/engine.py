@@ -16,17 +16,36 @@ import time
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 
+from chat.escalation import detect_high_risk, is_transfer_request, reply_claims_escalation
 from chat.sessions import append_turn, get_or_create
 from kb.loader import KnowledgeBase
 from kb.tool import TOOL_NAME, build_lookup_faq_tool, execute_lookup_faq_tool
 from llm.ark_client import build_client, chat_with_tools, stream_chat_with_tools
 from llm.instructions import SYSTEM_PROMPT
+from orders.tool import (
+    ORDER_STATUS_TOOL_NAME,
+    RECENT_ORDERS_TOOL_NAME,
+    build_query_order_status_tool,
+    build_query_recent_unfinished_orders_tool,
+    execute_query_order_status,
+    execute_query_recent_unfinished_orders,
+)
 
 logger = logging.getLogger("mini-kb-robot")
 
 _URL_RE = re.compile(r"https?://\S+")
 
-MAX_TOOL_ROUNDS = 3
+MAX_TOOL_ROUNDS = 4
+
+# Existing FAQ entry ("客服电话") reused as the grounded text for every
+# transfer-to-human reply - never invent a hotline/contact path of our own.
+CUSTOMER_SERVICE_ENTRY_ID = "09566022959"
+
+_SELF_HARM_REPLY = (
+    "非常抱歉听到你现在这么难受，你的安全对我们很重要。如果你有伤害自己的想法，"
+    "请立即拨打全国心理援助热线 12356，或拨打 120/110 寻求紧急帮助，"
+    "也可以联系身边信任的人陪着你。我已经同时为你转接人工客服，会有人尽快跟进。"
+)
 
 
 @dataclass
@@ -35,9 +54,11 @@ class ChatResult:
     reply: str
     image_urls: list[str] = field(default_factory=list)
     matched_entry_id: str | None = None
-    status: str = "answered"  # answered | clarifying | no_match | error
+    status: str = "answered"  # answered | clarifying | no_match | error | escalated
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    escalated: bool = False
+    escalation_reason: str | None = None  # self_harm | regulatory | user_insisted
 
 
 def _looks_like_a_question(text: str) -> bool:
@@ -55,12 +76,69 @@ def _strip_unattached_urls(reply: str, attached_urls: set[str]) -> str:
     return _URL_RE.sub(_replace, reply)
 
 
+def _regulatory_reply(kb: KnowledgeBase) -> str:
+    entry = kb.get(CUSTOMER_SERVICE_ENTRY_ID)
+    return "非常抱歉给您带来不好的体验，我已经为您转接人工客服处理。" + (entry.answer_text if entry else "")
+
+
+def _transfer_redirect_note() -> dict:
+    """Shown only for a context-free "transfer me" ask when nothing is
+    currently pending - redirect to finding out the real issue first, never
+    volunteer a transfer. The decision of whether to actually escalate is
+    made entirely in code (see the pending_escalation handling below), not by
+    asking the model to track "is this the first or second ask"."""
+    return {
+        "role": "system",
+        "content": (
+            "System note: the user just asked to be transferred to a human with "
+            "no explanation. Don't comply - ask what happened so you can try to "
+            "help via lookup_faq_entry (and the order tools if relevant) first - "
+            "end that question with a question mark. Don't mention this note."
+        ),
+    }
+
+
+def _grounded_transfer_text(kb: KnowledgeBase) -> str:
+    entry = kb.get(CUSTOMER_SERVICE_ENTRY_ID)
+    return "非常抱歉还是没能帮您解决，我已经为您转接人工客服处理。" + (entry.answer_text if entry else "")
+
+
 async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str) -> ChatResult:
     resolved_session_id, state = get_or_create(session_id)
     turn_start = time.monotonic()
 
-    tool_schema = build_lookup_faq_tool(kb)
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history, {"role": "user", "content": message}]
+    risk = detect_high_risk(message)
+    if risk == "self_harm":
+        logger.warning("session %s: self-harm signal matched, short-circuiting", resolved_session_id)
+        return ChatResult(
+            session_id=resolved_session_id,
+            reply=_SELF_HARM_REPLY,
+            status="escalated",
+            escalated=True,
+            escalation_reason="self_harm",
+        )
+    if risk == "regulatory":
+        logger.warning("session %s: regulatory-escalation signal matched, short-circuiting", resolved_session_id)
+        return ChatResult(
+            session_id=resolved_session_id,
+            reply=_regulatory_reply(kb),
+            matched_entry_id=CUSTOMER_SERVICE_ENTRY_ID,
+            status="escalated",
+            escalated=True,
+            escalation_reason="regulatory",
+        )
+
+    was_pending = state.pending_escalation
+    # A redirect turn only ever asks "what's wrong" - it never counts as a real
+    # resolution attempt, so it must never arm pending_escalation, regardless of
+    # how _looks_like_a_question happens to classify the model's phrasing.
+    redirect_injected = not was_pending and is_transfer_request(message)
+
+    tools = [build_lookup_faq_tool(kb), build_query_recent_unfinished_orders_tool(), build_query_order_status_tool()]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history]
+    if redirect_injected:
+        messages.append(_transfer_redirect_note())
+    messages.append({"role": "user", "content": message})
 
     client = build_client()
     new_messages: list[dict] = [{"role": "user", "content": message}]
@@ -73,7 +151,7 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
 
     for round_num in range(1, MAX_TOOL_ROUNDS + 1):
         round_start = time.monotonic()
-        completion = await chat_with_tools(client, messages, [tool_schema])
+        completion = await chat_with_tools(client, messages, tools)
         logger.info(
             "session %s round %d: %dms (tool_call=%s)",
             resolved_session_id,
@@ -97,6 +175,32 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
             status = "clarifying" if _looks_like_a_question(reply_text) else "no_match"
             if matched_entry_id is not None:
                 status = "answered"
+
+            escalated_now = False
+            escalation_reason: str | None = None
+
+            if was_pending:
+                if status == "answered":
+                    state.pending_escalation = False
+                elif status == "no_match":
+                    escalated_now = True
+                    escalation_reason = "unresolved_after_retry"
+                    state.pending_escalation = False
+                    reply_text = reply_text.rstrip() + "\n\n" + _grounded_transfer_text(kb)
+                    status = "escalated"
+                # status == "clarifying": still making progress, keep pending as-is.
+            elif status == "no_match" and not redirect_injected:
+                state.pending_escalation = True
+
+            if not escalated_now and reply_claims_escalation(reply_text):
+                logger.warning(
+                    "session %s: reply claims an escalation the counter didn't grant - reconciling state",
+                    resolved_session_id,
+                )
+                escalated_now = True
+                escalation_reason = "model_claimed"
+                status = "escalated"
+
             return ChatResult(
                 session_id=resolved_session_id,
                 reply=reply_text,
@@ -105,6 +209,8 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
                 status=status,
                 prompt_tokens=total_prompt_tokens,
                 completion_tokens=total_completion_tokens,
+                escalated=escalated_now,
+                escalation_reason=escalation_reason,
             )
 
         assistant_msg = {
@@ -117,15 +223,22 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
 
         for tool_call in choice.tool_calls:
             args = json.loads(tool_call.function.arguments or "{}")
-            entry_id = str(args.get("entry_id", ""))
-            result = execute_lookup_faq_tool(kb, entry_id)
+            name = tool_call.function.name
 
-            if "error" not in result:
-                matched_entry_id = entry_id
-                entry = kb.get(entry_id)
-                if entry:
-                    image_urls.extend(u for u in entry.image_urls if u not in image_urls)
-                    links.extend(link.url for link in entry.links if link.url not in links)
+            if name == RECENT_ORDERS_TOOL_NAME:
+                result = execute_query_recent_unfinished_orders(resolved_session_id)
+            elif name == ORDER_STATUS_TOOL_NAME:
+                order_id = str(args.get("order_id", ""))
+                result = execute_query_order_status(order_id)
+            else:
+                entry_id = str(args.get("entry_id", ""))
+                result = execute_lookup_faq_tool(kb, entry_id)
+                if "error" not in result:
+                    matched_entry_id = entry_id
+                    entry = kb.get(entry_id)
+                    if entry:
+                        image_urls.extend(u for u in entry.image_urls if u not in image_urls)
+                        links.extend(link.url for link in entry.links if link.url not in links)
 
             tool_msg = {
                 "role": "tool",
@@ -167,8 +280,41 @@ async def handle_message_stream(
     turn_start = time.monotonic()
     first_token_logged = False
 
-    tool_schema = build_lookup_faq_tool(kb)
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history, {"role": "user", "content": message}]
+    risk = detect_high_risk(message)
+    if risk is not None:
+        if risk == "self_harm":
+            logger.warning("session %s: self-harm signal matched, short-circuiting", resolved_session_id)
+            reply = _SELF_HARM_REPLY
+            reason = "self_harm"
+            matched_id = None
+        else:
+            logger.warning("session %s: regulatory-escalation signal matched, short-circuiting", resolved_session_id)
+            reply = _regulatory_reply(kb)
+            reason = "regulatory"
+            matched_id = CUSTOMER_SERVICE_ENTRY_ID
+        yield {"type": "delta", "text": reply}
+        yield {
+            "type": "done",
+            "session_id": resolved_session_id,
+            "reply": reply,
+            "image_urls": [],
+            "matched_entry_id": matched_id,
+            "status": "escalated",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "escalated": True,
+            "escalation_reason": reason,
+        }
+        return
+
+    was_pending = state.pending_escalation
+    redirect_injected = not was_pending and is_transfer_request(message)
+
+    tools = [build_lookup_faq_tool(kb), build_query_recent_unfinished_orders_tool(), build_query_order_status_tool()]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history]
+    if redirect_injected:
+        messages.append(_transfer_redirect_note())
+    messages.append({"role": "user", "content": message})
 
     client = build_client()
     new_messages: list[dict] = [{"role": "user", "content": message}]
@@ -182,7 +328,7 @@ async def handle_message_stream(
 
     for round_num in range(1, MAX_TOOL_ROUNDS + 1):
         round_start = time.monotonic()
-        stream = await stream_chat_with_tools(client, messages, [tool_schema])
+        stream = await stream_chat_with_tools(client, messages, tools)
 
         round_text = ""
         tool_call_acc: dict[int, dict] = {}
@@ -240,6 +386,34 @@ async def handle_message_stream(
             status = "clarifying" if _looks_like_a_question(full_text) else "no_match"
             if matched_entry_id is not None:
                 status = "answered"
+
+            escalated_now = False
+            escalation_reason: str | None = None
+
+            if was_pending:
+                if status == "answered":
+                    state.pending_escalation = False
+                elif status == "no_match":
+                    escalated_now = True
+                    escalation_reason = "unresolved_after_retry"
+                    state.pending_escalation = False
+                    appended = "\n\n" + _grounded_transfer_text(kb)
+                    full_text = full_text.rstrip() + appended
+                    yield {"type": "delta", "text": appended}
+                    status = "escalated"
+                # status == "clarifying": still making progress, keep pending as-is.
+            elif status == "no_match" and not redirect_injected:
+                state.pending_escalation = True
+
+            if not escalated_now and reply_claims_escalation(full_text):
+                logger.warning(
+                    "session %s: reply claims an escalation the counter didn't grant - reconciling state",
+                    resolved_session_id,
+                )
+                escalated_now = True
+                escalation_reason = "model_claimed"
+                status = "escalated"
+
             yield {
                 "type": "done",
                 "session_id": resolved_session_id,
@@ -249,6 +423,8 @@ async def handle_message_stream(
                 "status": status,
                 "prompt_tokens": total_prompt_tokens,
                 "completion_tokens": total_completion_tokens,
+                "escalated": escalated_now,
+                "escalation_reason": escalation_reason,
             }
             return
 
@@ -270,15 +446,22 @@ async def handle_message_stream(
 
         for tc in tool_calls_sorted:
             args = json.loads(tc["arguments"] or "{}")
-            entry_id = str(args.get("entry_id", ""))
-            result = execute_lookup_faq_tool(kb, entry_id)
+            name = tc["name"]
 
-            if "error" not in result:
-                matched_entry_id = entry_id
-                entry = kb.get(entry_id)
-                if entry:
-                    image_urls.extend(u for u in entry.image_urls if u not in image_urls)
-                    links.extend(link.url for link in entry.links if link.url not in links)
+            if name == RECENT_ORDERS_TOOL_NAME:
+                result = execute_query_recent_unfinished_orders(resolved_session_id)
+            elif name == ORDER_STATUS_TOOL_NAME:
+                order_id = str(args.get("order_id", ""))
+                result = execute_query_order_status(order_id)
+            else:
+                entry_id = str(args.get("entry_id", ""))
+                result = execute_lookup_faq_tool(kb, entry_id)
+                if "error" not in result:
+                    matched_entry_id = entry_id
+                    entry = kb.get(entry_id)
+                    if entry:
+                        image_urls.extend(u for u in entry.image_urls if u not in image_urls)
+                        links.extend(link.url for link in entry.links if link.url not in links)
 
             tool_msg = {
                 "role": "tool",

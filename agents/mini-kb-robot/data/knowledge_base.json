@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-09-04T08:27:07.868780+00:00",
+  "generated_at": "2026-09-06T00:39:34.943146+00:00",
   "source_file": "【内】C端FAQ.xlsx",
-  "entry_count": 73,
+  "entry_count": 74,
   "entries": [
     {
       "id": "04135836544",
       "category": "库迪咖啡TOC/门店类",
       "question": "如何联系下单门店",
       "answer_text": "如需联系下单门店可通过库迪咖啡APP/小程序找到对应【订单】-点击【耳机】图标即可~\nAPP查询路径：\n[图片]\n小程序查询路径：\n[图片]",
+      "preview": "库迪APP/小程序订单页点耳机客服图标即可联系下单门店。",
       "image_urls": [
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730166820679030.png",
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730166834426031.png"
@@ -21,6 +22,7 @@
       "category": "库迪咖啡TOC/合作类",
       "question": "市场合作",
       "answer_text": "感谢您对库迪咖啡的支持与喜爱，如您有市场合作需求，可将合作意向发送至MKT@cotticoffee.com邮箱，如有合作需要会与您联系。",
+      "preview": "感谢您对库迪咖啡的支持与喜爱，如您有市场合作需求，可将合作意向发送至MKT@co…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -31,6 +33,7 @@
       "category": "寒暄库",
       "question": "你是人工还是机器人？",
       "answer_text": "Hi~我是智能客服小迪~有任何问题都可以通过输入框告诉我，随时为您解答疑惑、提供帮助哦~",
+      "preview": "Hi~我是智能客服小迪~有任何问题都可以通过输入框告诉我，随时为您解答疑惑、提供…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -41,6 +44,7 @@
       "category": "库迪咖啡TOC/APP账户",
       "question": "如何修改个人信息",
       "answer_text": "您可以通过库迪咖啡小程序/APP-我的，点击手机号后编辑个人信息，可修改昵称、性别以及出生日期哦~",
+      "preview": "您可以通过库迪咖啡小程序/APP-我的，点击手机号后编辑个人信息，可修改昵称、性…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -51,6 +55,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "如何开发票",
       "answer_text": "亲爱的库米~您可以在库迪咖啡微信小程序或 App 中，依次点击【我的】→【发票管理】，进入页面后选择需要开票的订单，按照页面提示提交开票信息即可，预计15个工作日会将电子发票发送至您的邮箱，请留意查收哦~\n注：开票的抬头信息应是民事主体、自然人、公司或者企业名称\n温馨提示：若订单无法自助开票，点击【开发票（cotti://invoice-request）】提交申请即可~",
+      "preview": "亲爱的库米~您可以在库迪咖啡微信小程序或 App 中，依次点击【我的】→【发票管…",
       "image_urls": [],
       "links": [
         {
@@ -66,6 +71,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "客服电话",
       "answer_text": "库迪咖啡客服电话400-888-1717，为了减少等待时间，建议您通过【在线反馈】或联系下单门店哦~\n联系门店路径：通过库迪咖啡APP/小程序找到对应【订单】-点击【耳机】图标\n[图片]",
+      "preview": "库迪咖啡客服电话为400-888-1717，附APP联系门店操作路径。",
       "image_urls": [
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/manage/knowledge/aaa7.png"
       ],
@@ -78,6 +84,7 @@
       "category": "库迪咖啡TOC/APP账户",
       "question": "如何关闭消息推送功能",
       "answer_text": "进入库迪咖啡APP请前往【我的】-【设置】-【账号与安全】关闭【推送通知】；也可以通过手机系统的设置进行应用通知管理~\n[图片]",
+      "preview": "库迪咖啡APP经我的-设置-账号与安全路径即可关闭消息推送。",
       "image_urls": [
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730166485420047.png"
       ],
@@ -90,6 +97,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "联名周边商品售罄",
       "answer_text": "相关周边我们正在马不停蹄的加急补货中，可以留意门店到货的情况，随时到购买门店进行兑换~",
+      "preview": "相关周边我们正在马不停蹄的加急补货中，可以留意门店到货的情况，随时到购买门店进行…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -104,6 +112,7 @@
       "category": "库迪咖啡TOC/APP账户",
       "question": "下载APP",
       "answer_text": "苹果商店【App Store】、安卓【应用市场】搜索“库迪咖啡”即可下载APP~",
+      "preview": "苹果商店【App Store】、安卓【应用市场】搜索“库迪咖啡”即可下载APP~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -114,6 +123,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "开票金额为什么是0",
       "answer_text": "您申请开票的订单如果用了三方平台的团购代金券，自助申请时金额会显示为0~实际开票是按购买代金券的实付金额计算，最终金额以发票为准哦~",
+      "preview": "您申请开票的订单如果用了三方平台的团购代金券，自助申请时金额会显示为0~实际开票…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -124,6 +134,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "已邀请新客户，为什么没有获得奖励",
       "answer_text": "新客户点餐消费完成或预购套餐中的任饮券使用后，即算完成首笔订单，邀请人可获得\"2元小方砖兑换券\"及\"0元联名周边兑换券\"各1张~\n特别说明：以下情况无法获得奖励\n1.新客户用0元优惠券下单\n2.被邀请人在获邀之前，并非新客户\n3.新客户预购套餐但没有进行券的核销",
+      "preview": "新客户点餐消费完成或预购套餐中的任饮券使用后，即算完成首笔订单，邀请人可获得\"2…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -134,6 +145,7 @@
       "category": "库迪咖啡TOC/配送相关",
       "question": "外卖配送费用",
       "answer_text": "通过库迪咖啡APP或小程序点外卖，满39元立减3元配送费，不足39元也只要6元哟~优惠多多，下单便捷，不管何时，都能让您迅速开启惬意咖啡时光~",
+      "preview": "通过库迪咖啡APP或小程序点外卖，满39元立减3元配送费，不足39元也只要6元哟…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -144,6 +156,7 @@
       "category": "库迪咖啡TOC/代言人类",
       "question": "杨幂",
       "answer_text": "杨幂女士是库迪咖啡全球品牌代言人",
+      "preview": "杨幂女士是库迪咖啡全球品牌代言人",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -154,6 +167,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "联名订单退款",
       "answer_text": "套餐中的饮品券和周边兑换券均不可单独退款，您可在90天内于库迪咖啡APP或小程序使用，如需整单退款可通过以下路径操作：\n• 【订单】-【购券订单】-找到需要退款的订单-点击左下角【更多】-【申请退款】\n• ps：一定记得更新APP哦，若未更新，请前往小程序操作",
+      "preview": "套餐中的饮品券和周边兑换券均不可单独退款，您可在90天内于库迪咖啡APP或小程序…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -164,6 +178,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "合并开票",
       "answer_text": "支持多张订单合并开具，不过因消费城市、消费主体不同，会开出多张发票，具体要以下单门店实际开票情况为准~",
+      "preview": "支持多张订单合并开具，不过因消费城市、消费主体不同，会开出多张发票，具体要以下单…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -174,6 +189,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "如何查看附近门店位置",
       "answer_text": "感谢您对库迪咖啡的关注与期待，打开库迪咖啡小程序 / App-「到店自取」，点一下左上角的门店名称，周围的门店信息就一目了然啦～\n我们正马不停蹄在更多城市铺开门店呢！不管是写字楼楼下、社区门口，还是逛街路过的街角，都想快点把库迪送到库米身边～",
+      "preview": "感谢您对库迪咖啡的关注与期待，打开库迪咖啡小程序 / App-「到店自取」，点一…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -184,6 +200,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "没有联名包装",
       "answer_text": "联名专属包装被大家的热情 “抢空” 啦！别担心～我们的补货小纵队已开启 “加速狂飙” 模式，很快就会元气满满回归，感谢库米的理解~",
+      "preview": "联名专属包装被大家的热情 “抢空” 啦",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -194,6 +211,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "代金券能否延期",
       "answer_text": "亲爱的库米~已过期的代金券系统暂时不支持延期，建议您在有效期内尽快使用。同时我们也会不定期推出其他优惠活动，请您随时关注库迪咖啡官方微信公众号或APP获取更多优惠哦~",
+      "preview": "亲爱的库米~已过期的代金券系统暂时不支持延期，建议您在有效期内尽快使用",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -206,6 +224,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "可以现金支付吗",
       "answer_text": "库迪咖啡门店支持现金支付~",
+      "preview": "库迪咖啡门店支持现金支付~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -216,6 +235,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "如何查看消费金额",
       "answer_text": "您可以通过订单列表，点击对应订单即可查看订单的详情哦~",
+      "preview": "您可以通过订单列表，点击对应订单即可查看订单的详情哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -226,6 +246,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "【星期一免单】活动攻略",
       "answer_text": "1.领取9.9元尝鲜券\n①公众号→抢免单→库迪星期一\n②小程序直接点击活动按钮\n2.领券后下单\n进入库迪咖啡小程序，使用该券购买指定饮品\n3.限时抢免单\n下单后有机会抽中免单，名额有限，先到先得（抽中“免单”，将收到弹窗提醒）\n4.免单退款\n中奖后，免单金额将于当日原路退回\n温馨提示：\n①9.9元尝鲜券领取入口\n[图片][图片]\n②活动详细规则，可点击领券页面右上角「活动说明」查看\n[图片]\n③凡使用本券参与免单抽奖活动的订单,下单后,如无产品质量问题,不予办理人为因素发起的退款；若主动发起退款,将自动失去免单抽奖资格,已抽中的免单权益同步作废\n④如遇节假日等活动日期会顺延",
+      "preview": "库迪周一免单活动双入口领券参与流程及相关规则说明",
       "image_urls": [
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/managementFAQ/6951fb04b274d6763d350261.jpg",
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/6a55a134d99c8380df9824c2.png",
@@ -240,6 +261,7 @@
       "category": "库迪咖啡TOC/代言人类",
       "question": "王一博代言是到期了吗？",
       "answer_text": "我们与全球品牌代言人王一博先生的合作于2025年12月31日圆满结束。双方在合作期间保持了良好的沟通与合作，品牌对此表示感谢。其他更多相关讯息请持续关注库迪咖啡官方账号。",
+      "preview": "我们与全球品牌代言人王一博先生的合作于2025年12月31日圆满结束",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -250,6 +272,7 @@
       "category": "库迪咖啡TOC/优惠活动-无效推荐",
       "question": "为什么没有全场9.9了",
       "answer_text": "感谢您的关注~部分产品延续特价9.9元不限量，全线产品持续参与外卖平台各类补贴活动。我们始终致力于为您提供高品质、高性价比的咖啡产品，欢迎随时来体验~",
+      "preview": "感谢您的关注~部分产品延续特价9.9元不限量，全线产品持续参与外卖平台各类补贴活…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -260,6 +283,7 @@
       "category": "库迪咖啡TOC/优惠活动-无效推荐",
       "question": "申请发票提示“已取消”",
       "answer_text": "您好，开票的抬头信息应是民事主体、自然人、公司或者企业名称，请您核对后重新提交",
+      "preview": "您好，开票的抬头信息应是民事主体、自然人、公司或者企业名称，请您核对后重新提交",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -270,6 +294,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "如何加入社群领取专属福利",
       "answer_text": "库迪咖啡APP/小程序首页，点击「进群有礼」，即可获取附近门店的社群二维码。加入社群后，群内会定期发放活动链接，福利不错过！\n[图片]",
+      "preview": "库迪APP/小程序首页点进群有礼扫码入群，可享3.9元等社群专属福利。",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/69f0725bd99cbd3e8b4bce9e.png"
       ],
@@ -282,6 +307,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "京东团购券如何使用",
       "answer_text": "购买后无需复制券码，团购券将自动发放至下单手机号对应的【库迪咖啡APP/小程序】账号中\n1、打开库迪咖啡APP/小程序\n>我的\n>代金券\n>查看专属代金券\n>立即使用\n[图片]\n2、在跳转的【点餐】栏选择对应商品下单，结算时券会自动抵扣",
+      "preview": "京东购买的库迪团购券无需兑码，从我的页代金券进入点餐自动抵扣。",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/69febf0bd99cbd3e8b4bced9.jpg"
       ],
@@ -294,6 +320,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "联名周边套餐售罄",
       "answer_text": "您好！因活动火爆，周边库存紧张。您可在【潮玩】页面，点击售罄套餐下方【附近在售门店】选购。",
+      "preview": "您好！因活动火爆，周边库存紧张",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -308,6 +335,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "联名周边商品兑换不到",
       "answer_text": "您好！因活动火爆，周边库存数量有限。您可打开库迪咖啡 APP/小程序，进入【订单】- 购券订单，选中对应卡券，点击左下角【更多】，选择【修改使用门店】切换至有库存的门店进行兑换。",
+      "preview": "您好！因活动火爆，周边库存数量有限",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -322,6 +350,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "库迪咖啡app/小程序订单开票",
       "answer_text": "您可以在库迪咖啡微信小程序或 App 中，依次点击【我的】→【发票管理】，进入页面后选择需要开票的订单，按照页面提示提交开票信息即可。",
+      "preview": "您可以在库迪咖啡微信小程序或 App 中，依次点击【我的】→【发票管理】，进入页…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -332,6 +361,7 @@
       "category": "库迪咖啡TOC/联名活动类",
       "question": "库迪咖啡×花开锦绣联名活动",
       "answer_text": "2026年8月24日起，前往库迪咖啡APP/小程序点餐，选购带有「花开锦绣」标识联名套餐，即可解锁饮品(7选1)+ 专属周边\n具体权益以下单页面套餐详情为准，本次活动包含以下联名套餐：\n▪️花开锦绣 | 联名手幅套餐（应援手幅1套两张，均为正反双面，共4幅画面）\n▪️花开锦绣 | 联名票根套餐\n▪️花开锦绣 | 联名贴纸单杯套餐\n周边数量有限，先到先得，售完即止，欢迎下单选购~",
+      "preview": "2026年8月24日起，前往库迪咖啡APP/小程序点餐，选购带有「花开锦绣」标识…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -342,6 +372,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "能否更改订单",
       "answer_text": "订单生成后系统暂时不支持修改呢，还请您理解哦~",
+      "preview": "订单生成后系统暂时不支持修改呢，还请您理解哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -352,6 +383,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "发票开具错误",
       "answer_text": "为了能够更快更高效解决您的问题，建议您联系下单门店详细处理~\n联系门店路径：通过库迪咖啡APP/小程序找到对应【订单】-点击【耳机】图标\n如您无法联系上门店，可以点击右下角【+】找到【留言】入口，等待小迪协助为您处理~\n[图片]",
+      "preview": "库迪发票开错可点订单页耳机图标联系门店，也可留言找客服协助。",
       "image_urls": [
         "https://img.sobot.com/7e4943d988834c2f9f48fceb710f553b/common/image_1731739731418.png"
       ],
@@ -364,6 +396,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "如何获得联名周边",
       "answer_text": "1、您可打开库迪咖啡 APP / 小程序，通过底部【潮玩】页面选购指定周边套餐，下单后周边兑换券和饮品券将以卡券形式发放至您账户\n2、前往【我的】-【代金券】-【周边兑换券】，找到对应卡券点击【立即使用】，跳转页面完成下单兑换\n⚠️温馨提示：周边兑换券仅限指定门店使用；如需更换门店，可进入【订单】- 购券订单，选中对应卡券，点击左下角【更多】，选择【修改使用门店】操作",
+      "preview": "1、您可打开库迪咖啡 APP / 小程序，通过底部【潮玩】页面选购指定周边套餐，…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -374,6 +407,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "团购券是否支持转赠",
       "answer_text": "团购券购买后不支持转赠哦~",
+      "preview": "团购券购买后不支持转赠哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -384,6 +418,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "可以延迟取餐吗",
       "answer_text": "您的自取订单提交后，门店会即刻开始制作，为了让您品尝到饮品最佳的口感，建议您尽量准时到店取餐~",
+      "preview": "您的自取订单提交后，门店会即刻开始制作，为了让您品尝到饮品最佳的口感，建议您尽量…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -394,6 +429,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "单杯包装袋缺货",
       "answer_text": "库迪专属包装被大家的热情 “抢空” 啦！别担心～我们的补货小纵队已开启 “加速狂飙” 模式，很快就会元气满满回归，感谢库米的理解~",
+      "preview": "库迪专属包装被大家的热情 “抢空” 啦",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -404,6 +440,7 @@
       "category": "库迪咖啡TOC/合作类",
       "question": "招商合作咨询",
       "answer_text": "感谢您的关注，Cotti Coffee现已推出【咖啡梦想家计划】，希望帮助每一位咖啡梦想家，拥有属于自己的咖啡馆。如您有兴趣了解详细讯息或提供品牌合作，可戳链接：点击了解项目详情（https://franchise.cotticoffee.com/#/cooperation?sourceCode=1f4a1acf9642249565ccabd68c2cd4d2）并在页面内留下您的联系方式，工作人员会尽快与您联系，请注意接听，期待与您的合作哦~",
+      "preview": "感谢您的关注，Cotti Coffee现已推出【咖啡梦想家计划】，希望帮助每一位…",
       "image_urls": [],
       "links": [
         {
@@ -419,6 +456,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "发票没有盖章",
       "answer_text": "税局新版发票取消了发票专用章，采用电子签名代替。库迪咖啡严格按照国家法律法规提供合法合规的报销凭证，还请您放心哦~",
+      "preview": "税局新版发票取消了发票专用章，采用电子签名代替",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -429,6 +467,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "APP新用户限时专享",
       "answer_text": "首次下载APP的新用户可立领3张9.9元任饮券哦~",
+      "preview": "首次下载APP的新用户可立领3张9.9元任饮券哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -439,6 +478,7 @@
       "category": "库迪咖啡TOC/APP账户",
       "question": "如何注销账号",
       "answer_text": "账号一旦注销，您所有信息将被永久清空且无法恢复，请谨慎操作。如确认要注销，可登录库迪咖啡APP/小程序【我的】-【设置】-【账号与安全】-【账号注销】\n账号注销路径：\n[图片]",
+      "preview": "库迪咖啡账号可在APP/小程序我的-设置-账号与安全处注销，注销后信息不可恢复",
       "image_urls": [
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730166927772049.png"
       ],
@@ -451,6 +491,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "开票处理时效",
       "answer_text": "如您已成功提交开票申请，预计处理时效为15个工作日~如您未收到，为了能够更快更高效解决您的问题，建议您联系下单门店咨询开票进度~\n联系门店路径：通过库迪咖啡APP/小程序找到对应【订单】-点击【耳机】图标\n[图片]\n如您无法联系上门店，可以点击右下角【+】找到【留言】入口，等待小迪协助为您处理~",
+      "preview": "开票处理时效15个工作日，可通过库迪APP订单耳机入口联系门店咨询进度",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/699cfb5dd99cbd3e8b4bcdc8.jpg"
       ],
@@ -463,6 +504,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "美团券未到账",
       "answer_text": "购买美团券后无需复制券码，登录库迪咖啡APP/小程序【我的-兑换卡券】点击【获取美团券】即可兑换~\n(PS：团券手机号需与库迪咖啡APP/小程序手机号一致)\n获取美团券路径1：\n[图片]\n获取美团券路径2：\n[图片]",
+      "preview": "美团券未到账可通过库迪两个入口获取，需库迪与美团手机号一致。",
       "image_urls": [
         "https://img.sobot.com/7e4943d988834c2f9f48fceb710f553b/common/717b77ff3a8f0d841636aed94cf1323_1724733004815.png",
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/manage/knowledge/1751954602506-5ff3ab26-3c5c-4f87-b493-630971b422a0.jpeg"
@@ -478,6 +520,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "如何查门店信息",
       "answer_text": "您可通过库迪咖啡APP/小程序首页-【到店自取】-点击左上角的【门店名称】，即可查询门店地址和营业时间等信息~\n查询路径：\n[图片]",
+      "preview": "库迪APP/小程序首页点到店自取，点左上角门店名即可查询门店信息。",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/69f08db3d99cbd3e8b4bcea3.png"
       ],
@@ -490,6 +533,18 @@
       "category": "库迪咖啡TOC/产品相关",
       "question": "萃取方式精萃/原萃/满萃/区别",
       "answer_text": "精萃口感干净、香气集中；原萃香味口感更平衡；满萃香气饱满更丰富；每一种萃取方式都独具魅力，带来不同的味觉体验，等您来一一解锁哦~",
+      "preview": "精萃口感干净、香气集中；原萃香味口感更平衡；满萃香气饱满更丰富；每一种萃取方式都…",
+      "image_urls": [],
+      "links": [],
+      "ambiguous_with": [],
+      "disambiguation_hint": null
+    },
+    {
+      "id": "58204917366",
+      "category": "库迪咖啡TOC/订单相关",
+      "question": "下单选错商品或门店，订单还没开始制作怎么办",
+      "answer_text": "如订单还未开始制作，您可通过库迪咖啡APP/小程序找到对应【订单】-点击【取消订单】即可自助取消，取消后可重新下单选择正确的商品/门店哦~",
+      "preview": "如订单还未开始制作，您可通过库迪咖啡APP/小程序找到对应【订单】-点击【取消订…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -500,6 +555,7 @@
       "category": "库迪咖啡TOC/合作类",
       "question": "供应商合作",
       "answer_text": "感谢您对库迪咖啡的支持与喜爱，如您有供应商合作需求，可将合作意向发送至SC@cotticoffee.com邮箱，如有合作需要会与您联系。",
+      "preview": "感谢您对库迪咖啡的支持与喜爱，如您有供应商合作需求，可将合作意向发送至SC@co…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -510,6 +566,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "团购券能否延期",
       "answer_text": "三方平台购买的团购券需要在有效期内使用，若超期未核销，平台会自动原渠道退款。同时我们也会不定期推出其他优惠活动，如有需要重新再购买即可~",
+      "preview": "三方平台购买的团购券需要在有效期内使用，若超期未核销，平台会自动原渠道退款",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -523,6 +580,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "外卖平台订单开具发票",
       "answer_text": "三方外卖平台订单如需开票，请您通过下单平台订单点击【联系商家】由门店为您开具~",
+      "preview": "三方外卖平台订单如需开票，请您通过下单平台订单点击【联系商家】由门店为您开具~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -533,6 +591,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "商品售罄",
       "answer_text": "这款商品太火爆了，我们会抓紧备货，还请您随时关注哦~",
+      "preview": "这款商品太火爆了，我们会抓紧备货，还请您随时关注哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -547,6 +606,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "订单如何备注",
       "answer_text": "如需添加订单备注，请在结算确认订单界面点击【订单备注】填写备注信息~\n温馨提示：口味问题不在备注中说明，且订单生成后系统暂不支持修改备注信息~\n订单备注路径：\n[图片]",
+      "preview": "到店自取确认订单页点击订单备注填写，订单生成后不可修改，请勿填口味。",
       "image_urls": [
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730167134692043.png"
       ],
@@ -559,6 +619,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "门店Wifi密码",
       "answer_text": "由于各门店情况不同，建议您到店后咨询现场工作人员~",
+      "preview": "由于各门店情况不同，建议您到店后咨询现场工作人员~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -569,6 +630,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "使用团购券下单是否有数量限制",
       "answer_text": "每个订单使用团购券的数量无限制，1张团购券限1件商品使用，不可抵扣配送费及另行选配的奶油、辅料等附加费用~",
+      "preview": "每个订单使用团购券的数量无限制，1张团购券限1件商品使用，不可抵扣配送费及另行选…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -579,6 +641,7 @@
       "category": "库迪咖啡TOC/配送相关",
       "question": "外卖是否支持指定门店配送",
       "answer_text": "通过库迪咖啡APP或小程序选择【外卖配送】时，系统会根据您填写的收货地址，自动匹配附近已开业的门店提供配送服务，也支持更换当前提供配送的门店哦~\n更改配送门店路径：[图片]",
+      "preview": "库迪咖啡外卖支持点击当前配送门店栏更换指定配送门店。",
       "image_urls": [
         "https://www.vsbot.cn/onlinerobot/file/ueditor/resource/202410291730166897240086.png"
       ],
@@ -591,6 +654,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "如何上传照片",
       "answer_text": "感谢您的反馈，请保留相关照片，点击右下角【+】留言信息，我们会第一时间核查处理~",
+      "preview": "感谢您的反馈，请保留相关照片，点击右下角【+】留言信息，我们会第一时间核查处理~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -601,6 +665,7 @@
       "category": "库迪咖啡TOC/配送相关",
       "question": "配送范围",
       "answer_text": "为了让您喝到的每杯咖啡都保持最佳的品质与口感，目前配送暂时只覆盖门店周边区域。但请放心，我们正马不停蹄地加快开店步伐，争取早日把美味送到您身边~",
+      "preview": "为了让您喝到的每杯咖啡都保持最佳的品质与口感，目前配送暂时只覆盖门店周边区域",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -611,6 +676,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "邮箱没收到发票",
       "answer_text": "若已开订单的发票未收到，可在【发票记录】中找到对应详情页，点击【重新发送】即可。仍未收到的话，请核对邮箱地址是否正确哦~[图片]",
+      "preview": "邮箱未收到发票，可从我的页进发票管理，开票记录点重发并核对邮箱地址。",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/69f0877fd99cbd3e8b4bcea2.png"
       ],
@@ -623,6 +689,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "冰箱贴有脏污",
       "answer_text": "亚克力制品表面有一层膜，部分脏污是软磁碎屑于表面所致，建议先撕掉膜并擦拭后再次检查产品是否存在污损瑕疵哦~",
+      "preview": "亚克力制品表面有一层膜，部分脏污是软磁碎屑于表面所致，建议先撕掉膜并擦拭后再次检…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -633,6 +700,7 @@
       "category": "库迪咖啡TOC/产品相关",
       "question": "奶油消融",
       "answer_text": "热饮遇热或摇晃后，奶油容易融化影响口感～下次不妨试试冰饮，或者到店品尝，口感会更佳哦~",
+      "preview": "热饮遇热或摇晃后，奶油容易融化影响口感～下次不妨试试冰饮，或者到店品尝，口感会更…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -643,6 +711,7 @@
       "category": "寒暄库",
       "question": "在吗，有人吗？",
       "answer_text": "在的~有什么需求尽管说，随时为您待命哦~",
+      "preview": "在的~有什么需求尽管说，随时为您待命哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -653,6 +722,7 @@
       "category": "库迪咖啡TOC/APP账户",
       "question": "更改账户手机号",
       "answer_text": "个人信息中的昵称、性别以及出生日期可以修改，暂不支持修改账户手机号，如您的手机号不使用，建议更换其他可用手机号登录即可~",
+      "preview": "个人信息中的昵称、性别以及出生日期可以修改，暂不支持修改账户手机号，如您的手机号…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -663,6 +733,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "优惠券能否延期",
       "answer_text": "已过期的优惠券系统暂时不支持延期，建议您在有效期内尽快使用。同时我们也会不定期推出其他优惠活动，请您随时关注库迪咖啡官方微信公众号或APP获取更多优惠哦~",
+      "preview": "已过期的优惠券系统暂时不支持延期，建议您在有效期内尽快使用",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [
@@ -675,6 +746,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "团购券未到账",
       "answer_text": "此类团券购买后无需复制券码，自动发往填写手机号对应的【库迪咖啡APP/小程序】账号中，请您核对账号是否一致哦~\n代金券查询路径：\n[图片]",
+      "preview": "团购券自动发往库迪对应账号，可在我的页代金券入口查询。",
       "image_urls": [
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/manage/knowledge/1752497428667-img_v3_02o6_88c89526-6e91-4bbb-bb66-1620c570b23g.jpg"
       ],
@@ -689,6 +761,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "不支持开票类型",
       "answer_text": "使用各种形式的优惠券、折扣等促销活动抵扣的金额不支持开发票~",
+      "preview": "使用各种形式的优惠券、折扣等促销活动抵扣的金额不支持开发票~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -699,6 +772,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "外卖订单是否支持团购券结算",
       "answer_text": "团购券可以用于支付外卖订单的商品费用，配送费及另行选配的奶油、辅料等附加费用结算时需要单独支付~",
+      "preview": "团购券可以用于支付外卖订单的商品费用，配送费及另行选配的奶油、辅料等附加费用结算…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -709,6 +783,7 @@
       "category": "库迪咖啡TOC/配送相关",
       "question": "如何新增配送地址",
       "answer_text": "如需新建收货地址，登录库迪咖啡APP或小程序后，点【我的】-找到【地址管理】-选择【新建收货地址】，按提示操作就可以啦~\n[图片]",
+      "preview": "库迪咖啡APP或小程序点我的进入地址管理即可新增收货地址",
       "image_urls": [
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/manage/knowledge/1751957876605-image.png"
       ],
@@ -721,6 +796,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "生日是否有福利",
       "answer_text": "您的宝贵建议我们都认真记下啦！后续会定期策划各类丰富有趣的优惠活动，一定努力为您带来更多惊喜与福利，敬请期待哦～",
+      "preview": "您的宝贵建议我们都认真记下啦",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -731,6 +807,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "如何修改发票邮箱",
       "answer_text": "您可通过【发票记录】-找到已开具发票的详情页-【重新发送】-【确认邮箱】即可修改发票邮箱地址~\n[图片]",
+      "preview": "库迪APP从我的页进入发票管理开票记录即可修改发票邮箱。",
       "image_urls": [
         "https://hytx.cotticoffee.com/hyoss/tsbot/managementFAQ/69f08678d99cbd3e8b4bcea1.png"
       ],
@@ -743,6 +820,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "历史订单开票",
       "answer_text": "如开票的订单无法自助操作，可点击【开发票（cotti://invoice-request）】提交申请哦~",
+      "preview": "如开票的订单无法自助操作，可点击【开发票（cotti://invoice-req…",
       "image_urls": [],
       "links": [
         {
@@ -758,6 +836,7 @@
       "category": "库迪咖啡TOC/发票类",
       "question": "是否可以开纸质发票",
       "answer_text": "我们为您开具经税务机关批准的增值税电子普通发票。根据税务法律法规，如需要纸质发票，您可以自行打印增值税电子普通发票的PDF版文件哦~",
+      "preview": "我们为您开具经税务机关批准的增值税电子普通发票",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -768,6 +847,7 @@
       "category": "库迪咖啡TOC/优惠活动",
       "question": "优惠券规则",
       "answer_text": "优惠券的使用详情可登录库迪咖啡APP/小程序【我的-优惠券】点击对应的详细信息即可查看~",
+      "preview": "优惠券的使用详情可登录库迪咖啡APP/小程序【我的-优惠券】点击对应的详细信息即…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -778,6 +858,7 @@
       "category": "库迪咖啡TOC/配送相关",
       "question": "合并配送",
       "answer_text": "目前系统暂时还不支持多单合并配送~若您有这方面的需求，建议一次性完成下单，这样更方便快捷哦~",
+      "preview": "目前系统暂时还不支持多单合并配送~若您有这方面的需求，建议一次性完成下单，这样更…",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],
@@ -788,6 +869,7 @@
       "category": "库迪咖啡TOC/门店类",
       "question": "无法找到门店",
       "answer_text": "您可通过库迪咖啡APP/小程序找到对应【订单】-点击【导航前往】；如已到门店附近仍未找到，可直接联系下单门店~\n[图片]\n联系下单门店路径：\n[图片]",
+      "preview": "找不到库迪门店可点订单内导航前往，也可在订单详情页联系门店。",
       "image_urls": [
         "https://img.sobot.com/7e4943d988834c2f9f48fceb710f553b/common/image_1725066876127.png",
         "https://img.sobot.com/7e4943d988834c2f9f48fceb710f553b/common/image_1725066885900.png"
@@ -801,6 +883,7 @@
       "category": "库迪咖啡TOC/订单相关",
       "question": "删除历史订单",
       "answer_text": "如需删除历史订单，您可通过库迪咖啡APP/小程序找到对应【订单】-点击-【更多】即可删除，一经删除无法恢复哦~\n[图片]",
+      "preview": "库迪咖啡APP/小程序点订单页更多即可删除历史订单，删除后无法恢复",
       "image_urls": [
         "https://hyoss.vsbot.cn/tsbotoss/tsbot/manage/knowledge/aaa8.png"
       ],
@@ -813,6 +896,7 @@
       "category": "寒暄库",
       "question": "谢谢，再见。",
       "answer_text": "不客气呀～能帮到您也是我最大的快乐，有问题随时call我哦~",
+      "preview": "不客气呀～能帮到您也是我最大的快乐，有问题随时call我哦~",
       "image_urls": [],
       "links": [],
       "ambiguous_with": [],

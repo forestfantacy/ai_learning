@@ -60,9 +60,11 @@ class ChatResponse(BaseModel):
     reply: str
     image_urls: list[str] = []
     matched_entry_id: str | None = None
-    status: Literal["answered", "clarifying", "no_match", "error"]
+    status: Literal["answered", "clarifying", "no_match", "error", "escalated"]
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    escalated: bool = False
+    escalation_reason: str | None = None
 
 
 @app.get("/health")
@@ -97,6 +99,8 @@ async def chat(req: ChatRequest) -> ChatResponse:
         status=result.status,
         prompt_tokens=result.prompt_tokens,
         completion_tokens=result.completion_tokens,
+        escalated=result.escalated,
+        escalation_reason=result.escalation_reason,
     )
 
 

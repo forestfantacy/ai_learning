@@ -52,11 +52,19 @@ def check_turn(turn: dict, result) -> list[str]:
     if turn.get("expect_image_urls_nonempty") and not result.image_urls:
         failures.append("expected non-empty image_urls, got none")
 
+    if "expect_escalated" in turn and result.escalated != turn["expect_escalated"]:
+        failures.append(f"escalated: expected {turn['expect_escalated']!r}, got {result.escalated!r}")
+
+    if "expect_escalation_reason" in turn and result.escalation_reason != turn["expect_escalation_reason"]:
+        failures.append(
+            f"escalation_reason: expected {turn['expect_escalation_reason']!r}, got {result.escalation_reason!r}"
+        )
+
     return failures
 
 
 async def run_scenario(kb, scenario: dict) -> tuple[bool, list[str]]:
-    session_id = f"scenario-{uuid.uuid4()}"
+    session_id = scenario.get("session_id") or f"scenario-{uuid.uuid4()}"
     failures: list[str] = []
     for i, turn in enumerate(scenario["turns"]):
         result = await handle_message(kb, session_id, turn["message"])

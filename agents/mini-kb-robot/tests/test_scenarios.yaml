@@ -5,6 +5,53 @@
 # Each scenario is a fresh session; turns within a scenario share one
 # session_id so multi-turn clarification flows are exercised for real.
 
+- name: crisis_self_harm_short_circuits
+  description: >
+    Self-harm signal must short-circuit to the fixed crisis reply without
+    ever reaching the model - deterministic, no LLM judgment involved.
+  turns:
+    - message: "我不想活了，想跳楼"
+      expect_status: escalated
+      expect_escalated: true
+      expect_escalation_reason: self_harm
+      expect_reply_contains: ["12356"]
+
+- name: regulatory_keyword_short_circuits
+  description: >
+    Regulatory/media escalation threats must short-circuit to a human-transfer
+    reply grounded in the real "客服电话" entry, without model judgment.
+  turns:
+    - message: "你们这样我要打12315投诉"
+      expect_status: escalated
+      expect_escalated: true
+      expect_escalation_reason: regulatory
+      expect_entry_id: "09566022959"
+
+- name: blind_transfer_request_never_escalates_without_a_stated_problem
+  description: >
+    Repeating a context-free "转人工" - never explaining an actual problem -
+    must never escalate, no matter how many times it's repeated. Escalation
+    is earned by a genuinely unresolved, stated problem, not by keyword count.
+  turns:
+    - message: "转人工"
+      expect_status: clarifying
+      expect_escalated: false
+    - message: "你解决不了，给我转"
+      expect_escalated: false
+
+- name: unresolved_problem_escalates_only_on_the_turn_after_it_first_fails
+  description: >
+    A genuinely unresolved problem doesn't escalate the first time it fails -
+    only if the user is still unresolved on the very next turn.
+  turns:
+    - message: "你们卖披萨吗"
+      expect_status: no_match
+      expect_escalated: false
+    - message: "那你们能不能进货卖披萨，我真的很想知道能不能"
+      expect_status: escalated
+      expect_escalated: true
+      expect_escalation_reason: unresolved_after_retry
+
 - name: risk_cluster_ambiguous_bundle_first_turn
   description: >
     Deliberately ambiguous "联名周边卖完了" must not be answered directly -
@@ -37,6 +84,41 @@
     - message: "普通商品显示售罄了"
       expect_status: answered
       expect_entry_id: "63730228540"
+
+- name: wrong_order_no_orders_found
+  description: >
+    User reports a wrong item/store but the (mocked) recent-orders lookup
+    finds nothing - must say so plainly, not guess or ask for an order number.
+  session_id: "scenario-zero-orders-0"
+  turns:
+    - message: "我选错商品了，能取消吗"
+      expect_status: no_match
+
+- name: wrong_order_single_order_confirms_then_cancels
+  description: >
+    Exactly one recent unfinished order -> confirm it, then route to
+    self-service cancellation since the mock order status is not_started.
+  session_id: "scenario-one-order-1"
+  turns:
+    - message: "我选错商品了，能取消吗"
+      expect_status: clarifying
+    - message: "对，就是这笔"
+      expect_status: answered
+      expect_entry_id: "58204917366"
+      expect_reply_contains: ["取消"]
+
+- name: wrong_order_multiple_orders_lists_then_routes_to_store_contact
+  description: >
+    Two recent unfinished orders -> list them, user picks the second one,
+    whose mock order status is in_production -> route to store contact.
+  session_id: "scenario-two-orders-2"
+  turns:
+    - message: "我选错门店了"
+      expect_status: clarifying
+    - message: "2"
+      expect_status: answered
+      expect_entry_id: "04135836544"
+      expect_reply_contains: ["门店"]
 
 - name: factual_deregister_account
   turns:

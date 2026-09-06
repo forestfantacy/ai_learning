@@ -20,6 +20,10 @@ SESSION_TTL_SECONDS = 30 * 60
 class SessionState:
     history: list[dict] = field(default_factory=list)
     last_touched: float = field(default_factory=time.time)
+    # Set when a turn genuinely tried to resolve a stated problem and failed
+    # (status == "no_match") - if the very next turn is still unresolved, that's
+    # when a human handoff actually happens. See chat/engine.py.
+    pending_escalation: bool = False
 
 
 _SESSIONS: dict[str, SessionState] = {}
