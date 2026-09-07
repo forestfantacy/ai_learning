@@ -17,7 +17,7 @@ from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 
 from chat.escalation import detect_high_risk, is_transfer_request, reply_claims_escalation
-from chat.sessions import append_turn, get_or_create
+from chat.sessions import SessionState, append_turn, get_or_create
 from kb.loader import KnowledgeBase
 from kb.tool import TOOL_NAME, build_lookup_faq_tool, execute_lookup_faq_tool
 from llm.ark_client import build_client, chat_with_tools, stream_chat_with_tools
@@ -45,6 +45,20 @@ _SELF_HARM_REPLY = (
     "非常抱歉听到你现在这么难受，你的安全对我们很重要。如果你有伤害自己的想法，"
     "请立即拨打全国心理援助热线 12356，或拨打 120/110 寻求紧急帮助，"
     "也可以联系身边信任的人陪着你。我已经同时为你转接人工客服，会有人尽快跟进。"
+)
+
+_ATTITUDE_COMPLAINT_FIRST_TEXT = "抱歉给您带来不好的体验～我们非常重视您的反馈，后续会加强改进，期待下次为您提供更优质的服务～"
+_ATTITUDE_COMPLAINT_REPEAT_TEXT = "感谢您的及时反馈，填写下方留言卡片，我们会立即核查处理~"
+
+_QUALITY_COMPLAINT_FIRST_TEXT = (
+    "您好，非常抱歉给您带来不好的体验，库迪高度重视食品安全反馈。"
+    "请点击右下角「+」选择留言，在留言内提交订单信息、问题描述以及相关凭证，"
+    "收到留言后我们会跟进处理。"
+)
+_QUALITY_COMPLAINT_REPEAT_TEXT = (
+    "您好，非常抱歉给您带来困扰，库迪高度重视食品安全。"
+    "请在下方的留言卡片中填写订单信息、问题描述，并上传照片/视频凭证，"
+    "我们一定会妥善处理。"
 )
 
 
@@ -98,6 +112,99 @@ def _transfer_redirect_note() -> dict:
     }
 
 
+def _attitude_complaint_note(is_first: bool) -> dict:
+    """Poor staff attitude / rude behavior / harassment complaints don't get a
+    fixed reply - the count (first vs. repeat) is decided in code, but the
+    wording is composed by the model from this grounding text, same pattern
+    as _transfer_redirect_note()."""
+    text = _ATTITUDE_COMPLAINT_FIRST_TEXT if is_first else _ATTITUDE_COMPLAINT_REPEAT_TEXT
+    return {
+        "role": "system",
+        "content": (
+            "System note: the user just described poor staff attitude, rude "
+            "behavior, or harassment - "
+            + ("first time" if is_first else "a repeat complaint of this kind")
+            + " this session. Compose a reply grounded in the following - "
+            f"rephrase for tone freely but never drop a step: \"{text}\" "
+            "Don't offer a refund or compensation yourself. Don't mention this note."
+        ),
+    }
+
+
+def _quality_complaint_note(is_first: bool) -> dict:
+    """Product-quality / food-safety complaints - same pattern as
+    _attitude_complaint_note(), see chat/escalation.py for the trigger
+    keywords and chat/sessions.py for the per-session count."""
+    text = _QUALITY_COMPLAINT_FIRST_TEXT if is_first else _QUALITY_COMPLAINT_REPEAT_TEXT
+    return {
+        "role": "system",
+        "content": (
+            "System note: the user just reported a product-quality / "
+            "food-safety issue (hygiene, foreign object, expired material, "
+            "etc.) - "
+            + ("first time" if is_first else "a repeat complaint of this kind")
+            + " this session. Compose a reply grounded in the following - "
+            f"rephrase for tone freely but never drop a step: \"{text}\" "
+            "Don't offer a refund or compensation yourself. Don't mention this note."
+        ),
+    }
+
+
+FLAG_COMPLAINT_TOOL_NAME = "flag_complaint_category"
+
+
+def build_flag_complaint_tool() -> dict:
+    """Fallback for quality_complaint/attitude_complaint phrasing that
+    detect_high_risk's keyword scan misses (e.g. "肚子开始疼了" doesn't
+    contain the literal substring "肚子疼"). Only offered to the model when
+    the keyword scan already came up empty (risk is None) - a keyword hit
+    already injects a note and increments the counter, so offering this tool
+    then would risk double-counting the same complaint."""
+    return {
+        "type": "function",
+        "function": {
+            "name": FLAG_COMPLAINT_TOOL_NAME,
+            "description": (
+                "Call this when the user's message describes a product-quality / "
+                "food-safety issue (hygiene, a foreign object, expired material, "
+                "feeling unwell after drinking, etc.) or poor staff attitude / rude "
+                "behavior / harassment, and lookup_faq_entry has no better specific "
+                "match for it. Returns grounding text to compose your reply from - "
+                "rephrase for tone freely but never drop a step, and never offer a "
+                "refund or compensation yourself."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "enum": ["quality_complaint", "attitude_complaint"],
+                        "description": (
+                            "quality_complaint for product-quality/food-safety issues, "
+                            "attitude_complaint for staff attitude/rudeness/harassment."
+                        ),
+                    }
+                },
+                "required": ["category"],
+            },
+        },
+    }
+
+
+def execute_flag_complaint_category(state: SessionState, category: str) -> dict:
+    if category == "quality_complaint":
+        state.quality_complaint_count += 1
+        is_first = state.quality_complaint_count == 1
+        text = _QUALITY_COMPLAINT_FIRST_TEXT if is_first else _QUALITY_COMPLAINT_REPEAT_TEXT
+    elif category == "attitude_complaint":
+        state.attitude_complaint_count += 1
+        is_first = state.attitude_complaint_count == 1
+        text = _ATTITUDE_COMPLAINT_FIRST_TEXT if is_first else _ATTITUDE_COMPLAINT_REPEAT_TEXT
+    else:
+        return {"error": f"unknown category {category!r} - must be quality_complaint or attitude_complaint."}
+    return {"must_ground_reply_in": text}
+
+
 def _grounded_transfer_text(kb: KnowledgeBase) -> str:
     entry = kb.get(CUSTOMER_SERVICE_ENTRY_ID)
     return "非常抱歉还是没能帮您解决，我已经为您转接人工客服处理。" + (entry.answer_text if entry else "")
@@ -127,23 +234,39 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
             escalated=True,
             escalation_reason="regulatory",
         )
-
     was_pending = state.pending_escalation
     # A redirect turn only ever asks "what's wrong" - it never counts as a real
     # resolution attempt, so it must never arm pending_escalation, regardless of
     # how _looks_like_a_question happens to classify the model's phrasing.
     redirect_injected = not was_pending and is_transfer_request(message)
 
+    attitude_note_injected = risk == "attitude_complaint"
+    if attitude_note_injected:
+        state.attitude_complaint_count += 1
+    quality_note_injected = risk == "quality_complaint"
+    if quality_note_injected:
+        state.quality_complaint_count += 1
+
     tools = [build_lookup_faq_tool(kb), build_query_recent_unfinished_orders_tool(), build_query_order_status_tool()]
+    # Only offered when the keyword scan found nothing - a keyword hit already
+    # injects a note and increments the counter above, so offering this tool
+    # too would risk the model double-flagging the same complaint.
+    if risk is None:
+        tools.append(build_flag_complaint_tool())
     messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history]
     if redirect_injected:
         messages.append(_transfer_redirect_note())
+    if attitude_note_injected:
+        messages.append(_attitude_complaint_note(state.attitude_complaint_count == 1))
+    if quality_note_injected:
+        messages.append(_quality_complaint_note(state.quality_complaint_count == 1))
     messages.append({"role": "user", "content": message})
 
     client = build_client()
     new_messages: list[dict] = [{"role": "user", "content": message}]
 
     matched_entry_id: str | None = None
+    complaint_flagged = False
     image_urls: list[str] = []
     links: list[str] = []
     total_prompt_tokens = 0
@@ -173,7 +296,7 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
             reply_text = _strip_unattached_urls(reply_text, attached)
 
             status = "clarifying" if _looks_like_a_question(reply_text) else "no_match"
-            if matched_entry_id is not None:
+            if matched_entry_id is not None or attitude_note_injected or quality_note_injected or complaint_flagged:
                 status = "answered"
 
             escalated_now = False
@@ -230,6 +353,11 @@ async def handle_message(kb: KnowledgeBase, session_id: str | None, message: str
             elif name == ORDER_STATUS_TOOL_NAME:
                 order_id = str(args.get("order_id", ""))
                 result = execute_query_order_status(order_id)
+            elif name == FLAG_COMPLAINT_TOOL_NAME:
+                category = str(args.get("category", ""))
+                result = execute_flag_complaint_category(state, category)
+                if "error" not in result:
+                    complaint_flagged = True
             else:
                 entry_id = str(args.get("entry_id", ""))
                 result = execute_lookup_faq_tool(kb, entry_id)
@@ -281,7 +409,7 @@ async def handle_message_stream(
     first_token_logged = False
 
     risk = detect_high_risk(message)
-    if risk is not None:
+    if risk in ("self_harm", "regulatory"):
         if risk == "self_harm":
             logger.warning("session %s: self-harm signal matched, short-circuiting", resolved_session_id)
             reply = _SELF_HARM_REPLY
@@ -292,6 +420,8 @@ async def handle_message_stream(
             reply = _regulatory_reply(kb)
             reason = "regulatory"
             matched_id = CUSTOMER_SERVICE_ENTRY_ID
+        status = "escalated"
+        escalated = True
         yield {"type": "delta", "text": reply}
         yield {
             "type": "done",
@@ -299,10 +429,10 @@ async def handle_message_stream(
             "reply": reply,
             "image_urls": [],
             "matched_entry_id": matched_id,
-            "status": "escalated",
+            "status": status,
             "prompt_tokens": 0,
             "completion_tokens": 0,
-            "escalated": True,
+            "escalated": escalated,
             "escalation_reason": reason,
         }
         return
@@ -310,16 +440,30 @@ async def handle_message_stream(
     was_pending = state.pending_escalation
     redirect_injected = not was_pending and is_transfer_request(message)
 
+    attitude_note_injected = risk == "attitude_complaint"
+    if attitude_note_injected:
+        state.attitude_complaint_count += 1
+    quality_note_injected = risk == "quality_complaint"
+    if quality_note_injected:
+        state.quality_complaint_count += 1
+
     tools = [build_lookup_faq_tool(kb), build_query_recent_unfinished_orders_tool(), build_query_order_status_tool()]
+    if risk is None:
+        tools.append(build_flag_complaint_tool())
     messages = [{"role": "system", "content": SYSTEM_PROMPT}, *state.history]
     if redirect_injected:
         messages.append(_transfer_redirect_note())
+    if attitude_note_injected:
+        messages.append(_attitude_complaint_note(state.attitude_complaint_count == 1))
+    if quality_note_injected:
+        messages.append(_quality_complaint_note(state.quality_complaint_count == 1))
     messages.append({"role": "user", "content": message})
 
     client = build_client()
     new_messages: list[dict] = [{"role": "user", "content": message}]
 
     matched_entry_id: str | None = None
+    complaint_flagged = False
     image_urls: list[str] = []
     links: list[str] = []
     full_text = ""
@@ -384,7 +528,7 @@ async def handle_message_stream(
                     logger.warning("model streamed a URL not in the matched entry: %s", url)
 
             status = "clarifying" if _looks_like_a_question(full_text) else "no_match"
-            if matched_entry_id is not None:
+            if matched_entry_id is not None or attitude_note_injected or quality_note_injected or complaint_flagged:
                 status = "answered"
 
             escalated_now = False
@@ -453,6 +597,11 @@ async def handle_message_stream(
             elif name == ORDER_STATUS_TOOL_NAME:
                 order_id = str(args.get("order_id", ""))
                 result = execute_query_order_status(order_id)
+            elif name == FLAG_COMPLAINT_TOOL_NAME:
+                category = str(args.get("category", ""))
+                result = execute_flag_complaint_category(state, category)
+                if "error" not in result:
+                    complaint_flagged = True
             else:
                 entry_id = str(args.get("entry_id", ""))
                 result = execute_lookup_faq_tool(kb, entry_id)

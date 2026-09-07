@@ -24,6 +24,11 @@ class SessionState:
     # (status == "no_match") - if the very next turn is still unresolved, that's
     # when a human handoff actually happens. See chat/engine.py.
     pending_escalation: bool = False
+    # Per-session counts of complaint-category hits (see chat/escalation.py) -
+    # chat/engine.py uses these to pick which grounding text (first-hit vs.
+    # repeat-hit) goes into the system note the model composes its reply from.
+    attitude_complaint_count: int = 0
+    quality_complaint_count: int = 0
 
 
 _SESSIONS: dict[str, SessionState] = {}

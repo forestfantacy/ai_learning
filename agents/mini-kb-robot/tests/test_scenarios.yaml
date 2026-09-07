@@ -27,6 +27,54 @@
       expect_escalation_reason: regulatory
       expect_entry_id: "09566022959"
 
+- name: quality_complaint_reply_composed_and_escalates_on_second_hit
+  description: >
+    Product-quality / food-safety complaint signals inject a system note (not
+    a fixed script) so the model composes a reply grounded in the given text -
+    see _quality_complaint_note in chat/engine.py. First hit directs the user
+    to leave a message via "+"; a second hit in the same session escalates to
+    explicitly asking for photo/video evidence via the leave-message card.
+  turns:
+    - message: "我喝出了虫子，这也太脏了"
+      expect_status: answered
+      expect_escalated: false
+      expect_reply_contains: ["留言"]
+    - message: "卫生条件差，头发都掉进去了"
+      expect_status: answered
+      expect_escalated: false
+      expect_reply_contains: ["留言卡片"]
+
+- name: quality_complaint_fallback_tool_catches_a_non_keyword_phrasing
+  description: >
+    "我现在恶心想吐，好像是喝的东西有问题" doesn't contain any literal keyword
+    in _QUALITY_COMPLAINT_PHRASES, so detect_high_risk misses it - the model
+    should recognize it as a quality complaint anyway and call
+    flag_complaint_category (only offered when the keyword scan came up
+    empty) rather than answering no_match. See build_flag_complaint_tool /
+    execute_flag_complaint_category in chat/engine.py.
+  turns:
+    - message: "我现在恶心想吐，好像是喝的东西有问题"
+      expect_status: answered
+      expect_escalated: false
+      expect_reply_contains: ["留言"]
+
+- name: attitude_complaint_reply_composed_and_escalates_on_second_hit
+  description: >
+    Service-attitude / harassment complaint signals inject a system note (not
+    a fixed script) so the model composes a reply grounded in the given text -
+    see _attitude_complaint_note in chat/engine.py. First hit apologizes
+    without any call to action; a second hit in the same session must clearly
+    direct the user to leave a message.
+  turns:
+    - message: "店员态度恶劣，还对我阴阳怪气"
+      expect_status: answered
+      expect_escalated: false
+      expect_reply_not_contains: ["留言"]
+    - message: "又摔东西又骂人，太过分了"
+      expect_status: answered
+      expect_escalated: false
+      expect_reply_contains: ["留言"]
+
 - name: blind_transfer_request_never_escalates_without_a_stated_problem
   description: >
     Repeating a context-free "转人工" - never explaining an actual problem -

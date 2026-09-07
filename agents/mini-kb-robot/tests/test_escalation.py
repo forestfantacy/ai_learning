@@ -22,6 +22,37 @@ def test_self_harm_and_regulatory_lists_dont_cross_match():
         assert detect_high_risk(phrase) == "regulatory"
 
 
+def test_quality_complaint_phrase_detected():
+    assert detect_high_risk("这个店卫生条件差，喝出了虫子") == "quality_complaint"
+
+
+def test_quality_complaint_list_doesnt_cross_match_others():
+    phrases = (
+        "卫生条件差", "卫生太脏", "卫生不敢恭维", "食品安全问题",
+        "质量有问题", "质量堪忧", "产品质量差", "产品质量太差", "产品质量非常差",
+        "店员不洗手", "店员美甲", "指甲油", "偷工减料",
+        "喝出了虫子", "眼睫毛", "头发", "毛发", "玻璃片", "锡纸", "螺丝",
+        "小生物", "蚊子", "小飞虫", "苍蝇", "脏东西",
+        "肚子", "使用过期物料", "超保质期",
+    )
+    for phrase in phrases:
+        assert detect_high_risk(phrase) == "quality_complaint"
+
+
+def test_attitude_complaint_phrase_detected():
+    assert detect_high_risk("店员态度恶劣，还对我阴阳怪气") == "attitude_complaint"
+
+
+def test_attitude_complaint_list_doesnt_cross_match_others():
+    phrases = (
+        "态度恶劣", "背后议论人", "在那摔东西", "拿东西噼里啪啦的", "脸色特难看",
+        "口吐芬芳脏话", "激烈争执", "情绪激动", "恶意骚扰", "侵犯隐私",
+        "阴阳怪气", "指桑骂槐", "电话骚扰", "短信骚扰", "辱骂",
+    )
+    for phrase in phrases:
+        assert detect_high_risk(phrase) == "attitude_complaint"
+
+
 def test_transfer_exact_word_alone_matches():
     assert is_transfer_request("客服") is True
     assert is_transfer_request("人工") is True

@@ -2,6 +2,12 @@
 model judgment: self-harm crisis signals, and regulatory/media escalation
 threats. Both short-circuit chat/engine.py before any LLM call.
 
+Also detects two complaint categories - product-quality/food-safety and
+service-attitude/harassment - that do NOT short-circuit. Instead
+chat/engine.py counts occurrences per session and injects a system note
+carrying grounding text for the model to compose from (rephrase for tone,
+never drop a step), same pattern as the transfer-redirect note below.
+
 Also detects reflexive "transfer me to a human" requests with no explained
 problem - those don't short-circuit, they drive a code-owned 2-strike counter
 (chat/engine.py) so the first ask gets redirected and only a second ask is
@@ -12,7 +18,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-HighRiskCategory = Literal["self_harm", "regulatory"]
+HighRiskCategory = Literal["self_harm", "regulatory", "quality_complaint", "attitude_complaint"]
 
 # 自伤/自杀类信号 - 命中即用固定安全话术，不经过模型生成。
 _SELF_HARM_PHRASES = (
@@ -24,6 +30,25 @@ _SELF_HARM_PHRASES = (
 _REGULATORY_PHRASES = (
     "12315", "市场监管", "消协", "12345", "信访", "工商局",
     "市监局", "税务稽查", "12305", "12366", "找媒体", "投诉315",
+)
+
+# 产品质量/食品安全投诉信号 - 命中后由 chat/engine.py 按会话内命中次数注入
+# system note（带基准文案），模型据此组稿，不再直接短路返回固定字符串。
+_QUALITY_COMPLAINT_PHRASES = (
+    "卫生条件差", "卫生太脏", "卫生不敢恭维", "食品安全问题",
+    "质量有问题", "质量堪忧", "产品质量差", "产品质量太差", "产品质量非常差",
+    "店员不洗手", "店员美甲", "指甲油", "偷工减料",
+    "喝出了虫子", "眼睫毛", "头发", "毛发", "玻璃片", "锡纸", "螺丝",
+    "小生物", "蚊子", "小飞虫", "苍蝇", "脏东西",
+    "肚子", "使用过期物料", "超保质期",
+)
+
+# 服务态度/骚扰类投诉信号 - 和 quality_complaint 一样，命中后由
+# chat/engine.py 按会话内命中次数注入 system note，不短路。
+_ATTITUDE_COMPLAINT_PHRASES = (
+    "态度恶劣", "背后议论人", "在那摔东西", "拿东西噼里啪啦的", "脸色特难看",
+    "口吐芬芳脏话", "激烈争执", "情绪激动", "恶意骚扰", "侵犯隐私",
+    "阴阳怪气", "指桑骂槐", "电话骚扰", "短信骚扰", "辱骂",
 )
 
 # 无头无尾要求转人工 - 第一次先引导说明问题，第二次才真正放行。
@@ -50,6 +75,10 @@ def detect_high_risk(text: str) -> HighRiskCategory | None:
         return "self_harm"
     if any(p in text for p in _REGULATORY_PHRASES):
         return "regulatory"
+    if any(p in text for p in _QUALITY_COMPLAINT_PHRASES):
+        return "quality_complaint"
+    if any(p in text for p in _ATTITUDE_COMPLAINT_PHRASES):
+        return "attitude_complaint"
     return None
 
 
